@@ -9,16 +9,11 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 contract NFTMarketplace is ERC721URIStorage {
 
     using Counters for Counters.Counter;
-    //_tokenIds variable has the most recent minted tokenId
     Counters.Counter private _tokenIds;
-    //Keeps track of the number of items sold on the marketplace
     Counters.Counter private _itemsSold;
-    //owner is the contract address that created the smart contract
     address payable owner;
-    //The fee charged by the marketplace to be allowed to list an NFT
     uint256 listPrice = 0.01 ether;
 
-    //The structure to store info about a listed token
     struct ListedToken {
         uint256 tokenId;
         address payable owner;
@@ -27,7 +22,6 @@ contract NFTMarketplace is ERC721URIStorage {
         bool currentlyListed;
     }
 
-    //the event emitted when a token is successfully listed
     event TokenListedSuccess (
         uint256 indexed tokenId,
         address owner,
@@ -36,8 +30,14 @@ contract NFTMarketplace is ERC721URIStorage {
         bool currentlyListed
     );
 
-    //This mapping maps tokenId to token info and is helpful when retrieving details about a tokenId
     mapping(uint256 => ListedToken) private idToListedToken;
+
+    address public constant CAMP_TESTNET_LAYERZERO_V1_ENDPOINT = 0x83c73Da98cf733B03315aFa8758834b36a195b87;
+    address public constant CAMP_TESTNET_LAYERZERO_V2_ENDPOINT = 0x6EDCE65403992e310A62460808c4b910D972f10f;
+
+    // Camp Network LayerZero endpoint IDs
+    uint16 public constant CAMP_TESTNET_LAYERZERO_V1_ENDPOINT_ID = 10276;
+    uint16 public constant CAMP_TESTNET_LAYERZERO_V2_ENDPOINT_ID = 40276;
 
     constructor() ERC721("NFTMarketplace", "NFTM") {
         owner = payable(msg.sender);
@@ -65,7 +65,6 @@ contract NFTMarketplace is ERC721URIStorage {
         return _tokenIds.current();
     }
 
-    //The first time a token is created, it is listed here
     function createToken(string memory tokenURI, uint256 price) public payable returns (uint) {
         //Increment the tokenId counter, which is keeping track of the number of minted NFTs
         _tokenIds.increment();
