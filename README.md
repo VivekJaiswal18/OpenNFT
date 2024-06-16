@@ -1,6 +1,7 @@
-# Basic NFT Marketplace end to end
+# This is the project OpenNFT
 
-This code is for the Tutorial [Build your own NFT Marketplace from Scratch](https://docs.alchemy.com/alchemy/) built by [alchemy.com](https://alchemy.com)
+
+Proof that it uses Camp network is is public folder
 
 To set up the repository and run the marketplace locally, run the below
 ```bash
